@@ -23,5 +23,11 @@ expApproxUpTo2 :: Int -> Double -> Double
 expApproxUpTo2 0 = (\x -> 1)
 expApproxUpTo2 n = (\x -> (/) (funFactory2 n x) (fromIntegral (product [1..n])) + expApproxUpTo2 (n-1) x)
 
+dfr :: (Double -> Double) -> Double -> (Double -> Double)
+dfr f h = (\x -> (/) ((-) (f (x + h)) (f (x))) h )
+
 dfc :: (Double -> Double) -> Double -> (Double -> Double)
-dfc f h = (\x -> (/) ((-) (f (x + h)) (f (x))) h )
+dfc f h = (\x -> (/) ((-)(f (x + h)) (f (x - h))) (2*h))
+
+d2f :: (Double -> Double) -> Double -> (Double -> Double)
+d2f f h = dfr (dfr f h) h
